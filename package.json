@@ -1,6 +1,6 @@
 {
   "name": "klassijs-cucumber-html-reporter",
-  "version": "6.0.2",
+  "version": "6.0.3",
   "description": "Generates Cucumber HTML reports in three different themes",
   "type": "module",
   "main": "index.js",
@@ -46,7 +46,7 @@
     "pretest": "node --trace-deprecation node_modules/@cucumber/cucumber/bin/cucumber-js test/features/ -r test/features/step_definitions -f json:test/report/cucumber_report.json --no-strict || true",
     "clean": "rm -rf screenshots",
     "test": "node --trace-deprecation test/createHtmlReports.js",
-    "changelog": "standard-version --skip.tag",
+    "changelog": "standard-version",
     "changelog:patch": "standard-version --release-as patch --skip.commit --skip.tag",
     "changelog:minor": "standard-version --release-as minor --skip.commit --skip.tag",
     "changelog:major": "standard-version --release-as major --skip.commit --skip.tag"
