@@ -37,49 +37,26 @@ function getSlicesColorsForTable(dataTable) {
   return slices;
 }
 
-function drawCombinedDonut(featuresData, scenariosData) {
-  var innerEl = document.getElementById('donut-inner');
-  var outerEl = document.getElementById('donut-outer');
-  if (!innerEl || !outerEl) return;
-
-  var featuresTable = buildDataTable(featuresData);
-  var scenariosTable = buildDataTable(scenariosData);
-
-  var outerOptions = {
+function drawDonutChart(chartData) {
+  var el = document.getElementById('piechart_' + chartData.title.toLowerCase());
+  if (!el) return;
+  var data = buildDataTable(chartData);
+  var options = {
     width: '100%',
-    height: 320,
-    pieHole: 0.55,
+    height: 260,
+    pieHole: 0.5,
     colors: DONUT_COLORS,
     fontSize: 12,
     fontName: '"DM Sans", "Helvetica Neue", Helvetica, Arial, sans-serif',
     legend: { position: 'bottom', alignment: 'center' },
     pieSliceText: 'percentage',
-    pieSliceTextStyle: { fontSize: 12, color: '#fff', bold: true },
-    chartArea: { width: '92%', height: '78%', top: 8, right: 8, bottom: 40, left: 8 },
-    tooltip: { trigger: 'focus', isHtml: false },
-    slices: getSlicesColorsForTable(scenariosTable),
+    pieSliceTextStyle: { fontSize: 12, color: '#1e293b', bold: true },
+    chartArea: { width: '95%', height: '75%', top: 8, bottom: 50 },
+    tooltip: { trigger: 'focus' },
+    slices: getSlicesColorsForTable(data),
   };
-
-  var innerOptions = {
-    width: '100%',
-    height: '100%',
-    pieHole: 0.35,
-    colors: DONUT_COLORS,
-    fontSize: 11,
-    fontName: '"DM Sans", "Helvetica Neue", Helvetica, Arial, sans-serif',
-    legend: 'none',
-    pieSliceText: 'percentage',
-    pieSliceTextStyle: { fontSize: 11, color: '#fff', bold: true },
-    chartArea: { width: '100%', height: '100%' },
-    tooltip: { trigger: 'focus', isHtml: false },
-    slices: getSlicesColorsForTable(featuresTable),
-  };
-
-  var outerChart = new google.visualization.PieChart(outerEl);
-  var innerChart = new google.visualization.PieChart(innerEl);
-
-  outerChart.draw(scenariosTable, outerOptions);
-  innerChart.draw(featuresTable, innerOptions);
+  var chart = new google.visualization.PieChart(el);
+  chart.draw(data, options);
 }
 
 function drawChart(chartData) {

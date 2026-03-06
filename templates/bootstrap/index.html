@@ -61,41 +61,8 @@
 .report-navbar .project-name { color: var(--report-header-text); opacity: 0.9; }
 .report-navbar .generated-on { color: rgba(255,255,255,0.75); }
 .chart { background: #fff; border-radius: var(--report-radius); padding: 16px; box-shadow: var(--report-card-shadow); margin-bottom: 16px; }
-.donut-chart-wrapper {
-  position: relative;
-  width: 100%;
-  max-width: 420px;
-  height: 320px;
-  margin: 0 auto;
-}
-.donut-chart-outer {
-  position: absolute; left: 0; top: 0; width: 100%; height: 100%; z-index: 1;
-}
-.donut-chart-inner {
-  position: absolute; left: 50%; top: 50%;
-  width: 50%; height: 50%;
-  margin-left: -25%; margin-top: -25%;
-  z-index: 2;
-  border-radius: 50%;
-  overflow: hidden;
-  box-sizing: border-box;
-}
-.donut-center {
-  position: absolute; left: 50%; top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 3;
-  text-align: center;
-  pointer-events: none;
-}
-.donut-center .pass-rate-value { font-size: 2.5rem; font-weight: 700; line-height: 1; color: #b45309; font-family: 'DM Sans', sans-serif; }
-.donut-center .pass-rate-label { font-size: 11px; color: var(--report-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
-.donut-legend { margin-top: 16px; font-size: 12px; color: var(--report-text-muted); text-align: center; }
-.donut-legend .ring-hint { margin-bottom: 10px; font-weight: 600; color: var(--report-text); }
-.donut-legend .status-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 20px; margin-top: 8px; }
-.donut-legend .status-item { display: inline-flex; align-items: center; gap: 6px; }
-.donut-legend .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-.donut-legend .status-name { font-weight: 600; color: var(--report-text); min-width: 72px; }
-.donut-legend .counts { font-size: 11px; color: var(--report-text-muted); }
+.chart-box { min-height: 280px; }
+.chart-box .chart-title { font-size: 14px; font-weight: 600; color: var(--report-text); margin-bottom: 12px; text-align: center; }
 .panel-default { border: 1px solid var(--report-border); border-radius: var(--report-radius-sm); box-shadow: var(--report-card-shadow); overflow: hidden; }
 .panel-heading { border-bottom: 1px solid var(--report-border); background: #fff !important; }
     </style>
@@ -133,6 +100,11 @@
           <div class="feature-title">Failed</div>
           <div class="feature-value"><%= suite.scenarios.failed %></div>
         </div>
+        <% var _total = suite.scenarios.getTotal(); var _passPct = _total > 0 ? Math.round((suite.scenarios.passed / _total) * 100) : 0; %>
+        <div class="report-card" style="background: linear-gradient(135deg, #b45309 0%, #92400e 100%);">
+          <div class="feature-title">Pass rate</div>
+          <div class="feature-value"><%= _passPct %>%</div>
+        </div>
         <% if (suite.scenarios.rerun) { %>
         <div class="report-card saffron-box">
           <div class="feature-title">Re-run</div>
@@ -165,28 +137,13 @@
         <% } %>
       </div>
       <div class="row">
-        <div class="chart col-xs-12">
-          <div class="donut-chart-wrapper">
-            <div id="donut-outer" class="donut-chart-outer"></div>
-            <div id="donut-inner" class="donut-chart-inner"></div>
-            <% var _total = suite.scenarios.getTotal(); var _passPct = _total > 0 ? Math.round((suite.scenarios.passed / _total) * 100) : 0; %>
-            <div class="donut-center">
-              <div class="pass-rate-value"><%= _passPct %>%</div>
-              <div class="pass-rate-label">Pass rate</div>
-            </div>
-          </div>
-          <div class="donut-legend">
-            <div class="ring-hint">Inner ring = Features &nbsp;|&nbsp; Outer ring = Scenarios</div>
-            <div class="status-legend">
-              <span class="status-item"><span class="dot" style="background:#16a34a"></span><span class="status-name">Passed</span><span class="counts">F: <%= suite.features.summary.passed %> S: <%= suite.scenarios.passed %></span></span>
-              <span class="status-item"><span class="dot" style="background:#dc2626"></span><span class="status-name">Failed</span><span class="counts">F: <%= suite.features.summary.failed %> S: <%= suite.scenarios.failed %></span></span>
-              <span class="status-item"><span class="dot" style="background:#64748b"></span><span class="status-name">Pending</span><span class="counts">F: <%= suite.features.summary.pending %> S: <%= suite.scenarios.pending %></span></span>
-              <span class="status-item"><span class="dot" style="background:#0891b2"></span><span class="status-name">Undefined</span><span class="counts">F: <%= suite.features.summary.notdefined %> S: <%= suite.scenarios.notdefined %></span></span>
-              <span class="status-item"><span class="dot" style="background:#0284c7"></span><span class="status-name">Ambiguous</span><span class="counts">F: <%= suite.features.summary.ambiguous %> S: <%= suite.scenarios.ambiguous %></span></span>
-              <span class="status-item"><span class="dot" style="background:#d97706"></span><span class="status-name">Skipped</span><span class="counts">F: <%= suite.features.summary.skipped %> S: <%= suite.scenarios.skipped %></span></span>
-              <% if (suite.scenarios.rerun) { %><span class="status-item"><span class="dot" style="background:#ea580c"></span><span class="status-name">Re-run</span><span class="counts">S: <%= suite.scenarios.rerun %></span></span><% } %>
-            </div>
-          </div>
+        <div class="chart col-lg-6 col-md-6 chart-box">
+          <div class="chart-title">Features</div>
+          <div id="piechart_features"></div>
+        </div>
+        <div class="chart col-lg-6 col-md-6 chart-box">
+          <div class="chart-title">Scenarios</div>
+          <div id="piechart_scenarios"></div>
         </div>
       </div>
 
@@ -233,10 +190,8 @@
     <script type="text/javascript">
         google.load("visualization", "1", {packages: ["corechart"]});
         google.setOnLoadCallback(function() {
-          drawCombinedDonut(
-            { "failed": <%= suite.features.summary.failed %>, "passed": <%= suite.features.summary.passed %>, "notdefined": <%= suite.features.summary.notdefined %>, "pending": <%= suite.features.summary.pending %>, "skipped": <%= suite.features.summary.skipped %>, "ambiguous": <%= suite.features.summary.ambiguous %> },
-            { "failed": <%= suite.scenarios.failed %>, "passed": <%= suite.scenarios.passed %>, "rerun": <%= suite.scenarios.rerun %>, "notdefined": <%= suite.scenarios.notdefined %>, "pending": <%= suite.scenarios.pending %>, "skipped": <%= suite.scenarios.skipped %>, "ambiguous": <%= suite.scenarios.ambiguous %> }
-          );
+          drawDonutChart({ title: "Features", failed: <%= suite.features.summary.failed %>, passed: <%= suite.features.summary.passed %>, notdefined: <%= suite.features.summary.notdefined %>, pending: <%= suite.features.summary.pending %>, skipped: <%= suite.features.summary.skipped %>, ambiguous: <%= suite.features.summary.ambiguous %> });
+          drawDonutChart({ title: "Scenarios", failed: <%= suite.scenarios.failed %>, passed: <%= suite.scenarios.passed %>, rerun: <%= suite.scenarios.rerun %>, notdefined: <%= suite.scenarios.notdefined %>, pending: <%= suite.scenarios.pending %>, skipped: <%= suite.scenarios.skipped %>, ambiguous: <%= suite.scenarios.ambiguous %> });
         });
     </script>
     <script>
