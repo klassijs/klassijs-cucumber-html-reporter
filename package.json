@@ -1,6 +1,6 @@
 {
   "name": "klassijs-cucumber-html-reporter",
-  "version": "6.0.4",
+  "version": "6.1.0",
   "description": "Generates Cucumber HTML reports in three different themes",
   "type": "module",
   "main": "index.js",
@@ -65,8 +65,10 @@
     "uuid": "^13.0.0"
   },
   "devDependencies": {
+    "standard-version": "github:klassijs/standard-version",
+    "@commitlint/cli": "^20.4.3",
+    "@commitlint/config-conventional": "^20.4.3",
     "@cucumber/cucumber": "^12.7.0",
-    "chai": "^5.1.2",
-    "standard-version": "github:klassijs/standard-version"
+    "chai": "^5.1.2"
   }
 }
