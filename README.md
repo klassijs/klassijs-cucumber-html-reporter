@@ -26,12 +26,13 @@ Provide a Cucumber JSON report file created from your framework and this module 
 
 ``` bash
 yarn add klassijs-cucumber-html-reporter -D
+pnpm add klassijs-cucumber-html-reporter -D
 npm install klassijs-cucumber-html-reporter --save-dev
 ```
 
 ***Notes:***
 
-* Latest version supports Cucumber v8
+* Latest version supports Cucumber v12
 * Install `cucumber-html-reporter@5.5.0` for cucumber version `< Cucumber@8`
 
 
@@ -40,14 +41,14 @@ npm install klassijs-cucumber-html-reporter --save-dev
 Let's get you started:
 
 1. Install the package through npm or yarn
-2. Create a reporter.js and specify the options. Example of `hierarchy` theme:
+2. Create a reporter.js and specify the options. Example of `bootstrap` theme:
 
 ```js
 
-const reporter = require('klassijs-cucumber-html-reporter');
+const { generate } = await import('klassijs-cucumber-html-reporter');
 
 const reportOptions = {
-        theme: 'hierarchy',
+        theme: 'bootstrap',
         jsonFile: 'reports/klassijs-cucumber_report.json',
         output: 'reports/klassijs-cucumber_report.html',
         reportSuiteAsScenarios: true,
@@ -63,7 +64,7 @@ const reportOptions = {
         }
     };
 
-    reporter.generate(reportOptions);
+    generate(reportOptions);
     
 
     //more info on `metadata` is available in `options` section below.
