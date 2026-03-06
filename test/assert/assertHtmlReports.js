@@ -1,11 +1,10 @@
-'use strict';
-const chai = require('chai');
-const fs = require('fs-extra');
-const path = require('path');
+import * as chai from 'chai';
+import fs from 'fs-extra';
+import path from 'path';
 
 const should = chai.should();
 
-module.exports = function assertHtmlReports(outputDirectory) {
+export default function assertHtmlReports(outputDirectory) {
   function isReportExists(report) {
     try {
       return fs.statSync(report).isFile();
@@ -33,11 +32,11 @@ module.exports = function assertHtmlReports(outputDirectory) {
   );
   isReportExists(foundationHtmlFile).should.be.equal(
     true,
-    'foundationHtmlFile file' + foundationHtmlFile + ' does not exist'
+    'foundationHtmlFile file ' + foundationHtmlFile + ' does not exist'
   );
   isReportExists(simpleHtmlFile).should.be.equal(true, 'simpleHtmlFile file ' + simpleHtmlFile + ' does not exist');
   isDirectoryExists(path.join(outputDirectory, '..', '..', 'screenshots')).should.be.equal(
     true,
     'screenshots directory does not exists, at "parentDirectory/screenshots"'
   );
-};
+}
