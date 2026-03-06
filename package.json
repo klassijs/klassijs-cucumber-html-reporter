@@ -1,6 +1,6 @@
 {
   "name": "klassijs-cucumber-html-reporter",
-  "version": "6.0.5",
+  "version": "6.0.1",
   "description": "Generates Cucumber HTML reports in three different themes",
   "type": "module",
   "main": "index.js",
