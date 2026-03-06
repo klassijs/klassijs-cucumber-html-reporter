@@ -24,6 +24,19 @@ function buildDataTable(chartData) {
   return google.visualization.arrayToDataTable([['Status', 'Count']].concat(rows));
 }
 
+function getSlicesColorsForTable(dataTable) {
+  var slices = {};
+  var rows = dataTable.getNumberOfRows();
+  for (var i = 0; i < rows; i++) {
+    var statusName = dataTable.getValue(i, 0);
+    var colorIndex = STATUS_ORDER.indexOf(statusName);
+    if (colorIndex >= 0) {
+      slices[i] = { color: DONUT_COLORS[colorIndex] };
+    }
+  }
+  return slices;
+}
+
 function drawCombinedDonut(featuresData, scenariosData) {
   var innerEl = document.getElementById('donut-inner');
   var outerEl = document.getElementById('donut-outer');
@@ -41,9 +54,10 @@ function drawCombinedDonut(featuresData, scenariosData) {
     fontName: '"DM Sans", "Helvetica Neue", Helvetica, Arial, sans-serif',
     legend: { position: 'bottom', alignment: 'center' },
     pieSliceText: 'percentage',
-    pieSliceTextStyle: { fontSize: 12, color: '#1e293b', bold: true },
-    chartArea: { width: '90%', height: '75%' },
+    pieSliceTextStyle: { fontSize: 12, color: '#fff', bold: true },
+    chartArea: { width: '92%', height: '78%', top: 8, right: 8, bottom: 40, left: 8 },
     tooltip: { trigger: 'focus', isHtml: false },
+    slices: getSlicesColorsForTable(scenariosTable),
   };
 
   var innerOptions = {
@@ -55,9 +69,10 @@ function drawCombinedDonut(featuresData, scenariosData) {
     fontName: '"DM Sans", "Helvetica Neue", Helvetica, Arial, sans-serif',
     legend: 'none',
     pieSliceText: 'percentage',
-    pieSliceTextStyle: { fontSize: 11, color: '#1e293b', bold: true },
+    pieSliceTextStyle: { fontSize: 11, color: '#fff', bold: true },
     chartArea: { width: '100%', height: '100%' },
     tooltip: { trigger: 'focus', isHtml: false },
+    slices: getSlicesColorsForTable(featuresTable),
   };
 
   var outerChart = new google.visualization.PieChart(outerEl);
