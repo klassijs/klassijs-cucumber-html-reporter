@@ -7,8 +7,7 @@
   "typings": "./index.d.ts",
   "exports": {
     ".": "./index.js"
-  }
-,
+  },
   "author": {
     "name": "Kushang Gajjar",
     "email": "g.kushang@gmail.com"
@@ -65,10 +64,8 @@
     "uuid": "^13.0.0"
   },
   "devDependencies": {
-    "standard-version": "github:klassijs/standard-version",
-    "@commitlint/cli": "^20.4.3",
-    "@commitlint/config-conventional": "^20.4.3",
     "@cucumber/cucumber": "^12.7.0",
-    "chai": "^5.1.2"
+    "chai": "^5.1.2",
+    "standard-version": "github:klassijs/standard-version"
   }
 }
