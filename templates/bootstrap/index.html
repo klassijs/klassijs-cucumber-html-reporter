@@ -1,65 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>Cucumber Feature Report</title>
     <link rel="icon" href="https://www.lambdatest.com/favicon.ico" >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" >
     <style type="text/css">
+      :root {
+        --report-bg: #f8fafc;
+        --report-card-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        --report-card-shadow-hover: 0 4px 12px rgba(0,0,0,0.08);
+        --report-border: #e2e8f0;
+        --report-text: #1e293b;
+        --report-text-muted: #64748b;
+        --report-header-bg: #0f172a;
+        --report-header-text: #f1f5f9;
+        --report-radius: 10px;
+        --report-radius-sm: 6px;
+      }
+      body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--report-bg); color: var(--report-text); }
       <%= styles %>
 
 /** Issue in google-charts tooltip - https://github.com/google/google-visualization-issues/issues/2162 */
 .google-visualization-tooltip { pointer-events:none; }
-      
-.count-wrapper{
-  display: flex;
-  gap: 15px;
-}
-.card{
-  border: 1px solid #f5f5f5;
-  padding: 15px;
+
+.count-wrapper { display: flex; flex-wrap: wrap; gap: 12px; }
+.report-card {
+  border: none;
+  padding: 18px 20px;
   color: #fff;
-  border-radius: 5px;
+  border-radius: var(--report-radius);
   flex: 1;
+  min-width: 120px;
+  box-shadow: var(--report-card-shadow);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.generated-on{
-  margin-right: 10px;
+.report-card:hover { transform: translateY(-2px); box-shadow: var(--report-card-shadow-hover); }
+.report-card .feature-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.92; }
+.report-card .feature-value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+.generated-on { margin-right: 10px; font-size: 13px; color: var(--report-text-muted); }
+.red-box { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); }
+.blue-box { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); }
+.yellow-box { background: linear-gradient(135deg, #d97706 0%, #b45309 100%); }
+.saffron-box { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); }
+.green-box { background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); }
+.gray-box { background: linear-gradient(135deg, #64748b 0%, #475569 100%); }
+.amb-box { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); }
+.undefined-box { background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%); }
+.mb-20px { margin-bottom: 24px; }
+.report-navbar {
+  background: var(--report-header-bg) !important;
+  border: none;
+  border-radius: 0;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
 }
-.card h4{
-  font-size: 15px;
-}
-.red-box{
-  background: #d9534e;
-}
-.blue-box{
-  background: #0074ff;
-}
-.yellow-box{
-  background: #f0ad4e;
-}
-.saffron-box{
-  background: #ff9933;
-}
-.green-box{
-  background: #5cb85b;
-}
-.gray-box{
-  background: #999;
-}
-.amb-box{
-  background: #218bcf;
-}
-.undefined-box{
-  background: #22c2e2;
-}
-.mb-20px{
-  margin-bottom: 20px;
-}
+.report-navbar .navbar-brand { color: var(--report-header-text) !important; font-weight: 700; font-size: 1.2rem; }
+.report-navbar .project-name { color: var(--report-header-text); opacity: 0.9; }
+.report-navbar .generated-on { color: rgba(255,255,255,0.75); }
+.chart { background: #fff; border-radius: var(--report-radius); padding: 16px; box-shadow: var(--report-card-shadow); margin-bottom: 16px; }
+.panel-default { border: 1px solid var(--report-border); border-radius: var(--report-radius-sm); box-shadow: var(--report-card-shadow); overflow: hidden; }
+.panel-heading { border-bottom: 1px solid var(--report-border); background: #fff !important; }
     </style>
     <meta charset="UTF-8">
   </head>
   <body>
 
-    <div class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="navbar navbar-default navbar-static-top report-navbar" role="navigation">
       <div class="container">
         <div class="navbar-header">
         <%var brandTitle = suite.brandTitle ? suite.brandTitle : 'Cucumberjs Report' %>
@@ -77,101 +86,48 @@
     <div class="container">
 
       <div class="count-wrapper mb-20px">
-        <div class="card blue-box">
-          <div class="feature-title">
-            <h4>All Scenarios</h2>
-          </div>
-          <div class="feature-value">
-            <h5>
-              <%= suite.scenarios.getTotal() %>
-            </h5>
-          </div>
+        <div class="report-card blue-box">
+          <div class="feature-title">All Scenarios</div>
+          <div class="feature-value"><%= suite.scenarios.getTotal() %></div>
         </div>
-        <div class="card green-box">
-          <div class="feature-title">
-            <h4>Passed Scenarios</h2>
-          </div>
-          <div class="feature-value">
-            <h5>
-              <%= suite.scenarios.passed %>
-            </h5>
-          </div>
+        <div class="report-card green-box">
+          <div class="feature-title">Passed</div>
+          <div class="feature-value"><%= suite.scenarios.passed %></div>
         </div>
-        <div class="card red-box">
-          <div class="feature-title">
-            <h4>Failed Scenarios</h2>
-          </div>
-          <div class="feature-value">
-            <h5>
-              <%= suite.scenarios.failed %>
-            </h5>
-          </div>
+        <div class="report-card red-box">
+          <div class="feature-title">Failed</div>
+          <div class="feature-value"><%= suite.scenarios.failed %></div>
         </div>
         <% if (suite.scenarios.rerun) { %>
-          <div class="card saffron-box">
-            <div class="feature-title">
-              <h4>Re-run Scenarios</h2>
-            </div>
-            <div class="feature-value">
-              <h5>
-                <%= suite.scenarios.rerun %>
-              </h5>
-            </div>
-          </div>
-          <% }
-        %>
+        <div class="report-card saffron-box">
+          <div class="feature-title">Re-run</div>
+          <div class="feature-value"><%= suite.scenarios.rerun %></div>
+        </div>
+        <% } %>
         <% if (suite.scenarios.skipped) { %>
-          <div class="card yellow-box">
-            <div class="feature-title">
-              <h4>Skipped Scenarios</h2>
-            </div>
-            <div class="feature-value">
-              <h5>
-                <%= suite.scenarios.skipped %>
-              </h5>
-            </div>
-          </div>
-          <% }
-        %>
+        <div class="report-card yellow-box">
+          <div class="feature-title">Skipped</div>
+          <div class="feature-value"><%= suite.scenarios.skipped %></div>
+        </div>
+        <% } %>
         <% if (suite.scenarios.pending) { %>
-          <div class="card gray-box">
-            <div class="feature-title">
-              <h4>Pending Scenarios</h2>
-            </div>
-            <div class="feature-value">
-              <h5>
-                <%= suite.scenarios.pending %>
-              </h5>
-            </div>
-          </div>
-          <% }
-        %>
+        <div class="report-card gray-box">
+          <div class="feature-title">Pending</div>
+          <div class="feature-value"><%= suite.scenarios.pending %></div>
+        </div>
+        <% } %>
         <% if (suite.scenarios.notdefined) { %>
-          <div class="card undefined-box">
-            <div class="feature-title">
-              <h4>Undefined Scenarios</h2>
-            </div>
-            <div class="feature-value">
-              <h5>
-                <%= suite.scenarios.notdefined %>
-              </h5>
-            </div>
-          </div>
-          <% }
-        %>
+        <div class="report-card undefined-box">
+          <div class="feature-title">Undefined</div>
+          <div class="feature-value"><%= suite.scenarios.notdefined %></div>
+        </div>
+        <% } %>
         <% if (suite.scenarios.ambiguous) { %>
-          <div class="card amb-box">
-            <div class="feature-title">
-              <h4>Ambiguous Scenarios</h2>
-            </div>
-            <div class="feature-value">
-              <h5>
-                <%= suite.scenarios.ambiguous %>
-              </h5>
-            </div>
-          </div>
-          <% }
-        %>
+        <div class="report-card amb-box">
+          <div class="feature-title">Ambiguous</div>
+          <div class="feature-value"><%= suite.scenarios.ambiguous %></div>
+        </div>
+        <% } %>
       </div>
       <div class="row">
         <div class="chart col-lg-6 col-md-6" id="piechart_features"></div>

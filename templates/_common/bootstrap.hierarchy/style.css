@@ -1,5 +1,6 @@
 .panel-heading {
     padding: 0;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 @media (min-width: 768px) {
@@ -116,11 +117,11 @@
 }
 
 .tag {
-    font-size: 13px;
-    color: #696969;
-    letter-spacing: 0.3px;
-    font-weight: bold;
-    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    color: #64748b;
+    letter-spacing: 0.02em;
+    font-weight: 600;
+    font-family: 'DM Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .chart {
@@ -143,17 +144,21 @@ div.chart div div svg rect {
 
 .screenshot {
     padding: 2% 0 2% 0;
+    border-radius: 6px;
+    overflow: hidden;
 }
 
 .description {
-    background-color: white;
-    border-color: white;
+    background-color: #f8fafc;
+    border: none;
+    border-radius: 6px;
     line-height: 1.6;
-    color: #6f6f6f;
+    color: #475569;
     font-weight: 400;
-    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+    font-family: 'DM Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
-    padding: 0.1em 0.5em 1.2em 1.5em
+    padding: 0.75em 1em 1em 1.25em;
+    margin: 0 0 0.75em 0;
 }
 
 #scenario-description {
@@ -170,41 +175,45 @@ table {
 }
 
 table, th, td {
-    border: 1px solid black;
+    border: 1px solid #e2e8f0;
 }
 
 th, td {
     text-align: left;
-    padding: 8px;
+    padding: 10px 12px;
 }
 
 th {
-    background-color: #f5f5f5;
-    color: black;
+    background-color: #f8fafc;
+    color: #1e293b;
+    font-weight: 600;
 }
 
 .info {
-    background-color: #fbfbfb;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
 }
 
 pre {
     display: block;
-    padding: 10px;
-    margin-top: 1em;
-    margin-right: 3em;
+    padding: 12px 14px;
+    margin-top: 0.75em;
+    margin-right: 0;
     font-size: 13px;
-    line-height: 1.42857143;
+    line-height: 1.5;
     word-break: break-all;
     word-wrap: break-word;
-    color: #333;
-    background-color: #f5f5f5;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    color: #334155;
+    background-color: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
 }
 
 .step-duration {
     float: right;
-    color: #BDBDBD;
+    color: #94a3b8;
+    font-size: 12px;
 }
 
 .footer-div {
@@ -250,7 +259,8 @@ pre {
 }
 
 .keyword {
-    color: #616161;
+    color: #475569;
+    font-weight: 600;
 }
 
 .feature-passed {
