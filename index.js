@@ -23,14 +23,11 @@
  |  THE SOFTWARE.                                                                            |
  \*---------------------------------------------------------------------------------------- */
 
-'use strict';
+import reporter from './lib/reporter.js';
 
-const reporter = require('./lib/reporter');
-
-function generateReport(options, callback) {
+export function generateReport(options, callback) {
   return reporter.generate(options, callback);
 }
 
-module.exports = {
-  generate: generateReport,
-};
+export { generateReport as generate };
+export default { generate: generateReport };

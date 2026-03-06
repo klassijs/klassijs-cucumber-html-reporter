@@ -1,6 +1,5 @@
-const { Before, After } = require('@cucumber/cucumber');
-
-const chalk = require('chalk');
+import { Before, After } from '@cucumber/cucumber';
+import chalk from 'chalk';
 
 Before(function (scenario, callback) {
     console.log( '\n' + chalk.blue.bgYellow.bold('TESTING: ') + chalk.white.bgBlue(scenario.pickle.name));
