@@ -40,6 +40,18 @@
 .report-card:hover { transform: translateY(-2px); box-shadow: var(--report-card-shadow-hover); }
 .report-card .feature-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.92; }
 .report-card .feature-value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+.summary-cards-compact { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.summary-cards-compact .report-card-compact {
+  border: none;
+  padding: 8px 12px;
+  color: #fff;
+  border-radius: 6px;
+  flex: 0 1 auto;
+  min-width: 0;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+}
+.summary-cards-compact .report-card-compact .feature-title { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; opacity: 0.92; }
+.summary-cards-compact .report-card-compact .feature-value { font-size: 16px; font-weight: 700; margin-top: 2px; }
 .generated-on { margin-right: 10px; font-size: 13px; color: var(--report-text-muted); }
 .red-box { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); }
 .blue-box { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); }
@@ -87,55 +99,6 @@
 
     <div class="container">
 
-      <div class="count-wrapper mb-20px">
-        <div class="report-card blue-box">
-          <div class="feature-title">All Scenarios</div>
-          <div class="feature-value"><%= suite.scenarios.getTotal() %></div>
-        </div>
-        <div class="report-card green-box">
-          <div class="feature-title">Passed</div>
-          <div class="feature-value"><%= suite.scenarios.passed %></div>
-        </div>
-        <div class="report-card red-box">
-          <div class="feature-title">Failed</div>
-          <div class="feature-value"><%= suite.scenarios.failed %></div>
-        </div>
-        <% var _total = suite.scenarios.getTotal(); var _passPct = _total > 0 ? Math.round((suite.scenarios.passed / _total) * 100) : 0; %>
-        <div class="report-card" style="background: linear-gradient(135deg, #b45309 0%, #92400e 100%);">
-          <div class="feature-title">Pass rate</div>
-          <div class="feature-value"><%= _passPct %>%</div>
-        </div>
-        <% if (suite.scenarios.rerun) { %>
-        <div class="report-card saffron-box">
-          <div class="feature-title">Re-run</div>
-          <div class="feature-value"><%= suite.scenarios.rerun %></div>
-        </div>
-        <% } %>
-        <% if (suite.scenarios.skipped) { %>
-        <div class="report-card yellow-box">
-          <div class="feature-title">Skipped</div>
-          <div class="feature-value"><%= suite.scenarios.skipped %></div>
-        </div>
-        <% } %>
-        <% if (suite.scenarios.pending) { %>
-        <div class="report-card gray-box">
-          <div class="feature-title">Pending</div>
-          <div class="feature-value"><%= suite.scenarios.pending %></div>
-        </div>
-        <% } %>
-        <% if (suite.scenarios.notdefined) { %>
-        <div class="report-card undefined-box">
-          <div class="feature-title">Undefined</div>
-          <div class="feature-value"><%= suite.scenarios.notdefined %></div>
-        </div>
-        <% } %>
-        <% if (suite.scenarios.ambiguous) { %>
-        <div class="report-card amb-box">
-          <div class="feature-title">Ambiguous</div>
-          <div class="feature-value"><%= suite.scenarios.ambiguous %></div>
-        </div>
-        <% } %>
-      </div>
       <div class="row">
         <div class="chart col-lg-6 col-md-6 chart-box">
           <div class="chart-title">Features</div>
@@ -145,6 +108,56 @@
           <div class="chart-title">Scenarios</div>
           <div id="piechart_scenarios"></div>
         </div>
+      </div>
+
+      <div class="summary-cards-compact">
+        <div class="report-card-compact blue-box">
+          <div class="feature-title">All</div>
+          <div class="feature-value"><%= suite.scenarios.getTotal() %></div>
+        </div>
+        <div class="report-card-compact green-box">
+          <div class="feature-title">Passed</div>
+          <div class="feature-value"><%= suite.scenarios.passed %></div>
+        </div>
+        <div class="report-card-compact red-box">
+          <div class="feature-title">Failed</div>
+          <div class="feature-value"><%= suite.scenarios.failed %></div>
+        </div>
+        <% var _total = suite.scenarios.getTotal(); var _passPct = _total > 0 ? Math.round((suite.scenarios.passed / _total) * 100) : 0; %>
+        <div class="report-card-compact" style="background: linear-gradient(135deg, #b45309 0%, #92400e 100%);">
+          <div class="feature-title">Pass rate</div>
+          <div class="feature-value"><%= _passPct %>%</div>
+        </div>
+        <% if (suite.scenarios.rerun) { %>
+        <div class="report-card-compact saffron-box">
+          <div class="feature-title">Re-run</div>
+          <div class="feature-value"><%= suite.scenarios.rerun %></div>
+        </div>
+        <% } %>
+        <% if (suite.scenarios.skipped) { %>
+        <div class="report-card-compact yellow-box">
+          <div class="feature-title">Skipped</div>
+          <div class="feature-value"><%= suite.scenarios.skipped %></div>
+        </div>
+        <% } %>
+        <% if (suite.scenarios.pending) { %>
+        <div class="report-card-compact gray-box">
+          <div class="feature-title">Pending</div>
+          <div class="feature-value"><%= suite.scenarios.pending %></div>
+        </div>
+        <% } %>
+        <% if (suite.scenarios.notdefined) { %>
+        <div class="report-card-compact undefined-box">
+          <div class="feature-title">Undefined</div>
+          <div class="feature-value"><%= suite.scenarios.notdefined %></div>
+        </div>
+        <% } %>
+        <% if (suite.scenarios.ambiguous) { %>
+        <div class="report-card-compact amb-box">
+          <div class="feature-title">Ambiguous</div>
+          <div class="feature-value"><%= suite.scenarios.ambiguous %></div>
+        </div>
+        <% } %>
       </div>
 
       <% if (suite.metadata) { %>
