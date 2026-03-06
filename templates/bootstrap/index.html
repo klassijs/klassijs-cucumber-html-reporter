@@ -123,7 +123,11 @@
 
       <div class="summary-cards-compact">
         <div class="report-card-compact blue-box">
-          <div class="feature-title">All</div>
+          <div class="feature-title">Features</div>
+          <div class="feature-value"><%= suite.features ? suite.features.length : 0 %></div>
+        </div>
+        <div class="report-card-compact blue-box">
+          <div class="feature-title">Scenarios</div>
           <div class="feature-value"><%= suite.scenarios.getTotal() %></div>
         </div>
         <div class="report-card-compact green-box">
