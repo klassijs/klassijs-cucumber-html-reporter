@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.0.9](https://github.com/klassijs/klassijs-cucumber-html-reporter/compare/v6.0.10...v6.0.9) (2026-03-06)
+
 ### [6.0.10](https://github.com/klassijs/klassijs-cucumber-html-reporter/compare/v6.0.3...v6.0.10) (2026-03-06)
 
 ### [6.0.4](https://github.com/klassijs/klassijs-cucumber-html-reporter/compare/v6.0.3...v6.0.4) (2026-03-06)
