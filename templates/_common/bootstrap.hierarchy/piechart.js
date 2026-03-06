@@ -1,16 +1,27 @@
 var DONUT_COLORS = ['#16a34a', '#dc2626', '#64748b', '#0891b2', '#0284c7', '#d97706', '#ea580c'];
 
+var STATUS_ORDER = ['Passed', 'Failed', 'Pending', 'Undefined', 'Ambiguous', 'Skipped', 'Re-run'];
+
 function buildDataTable(chartData) {
-  return google.visualization.arrayToDataTable([
-    ['Status', 'Count'],
-    ['Passed', chartData.passed || 0],
-    ['Failed', chartData.failed || 0],
-    ['Pending', chartData.pending || 0],
-    ['Undefined', chartData.notdefined || 0],
-    ['Ambiguous', chartData.ambiguous || 0],
-    ['Skipped', chartData.skipped || 0],
-    ['Re-run', chartData.rerun || 0],
-  ]);
+  var raw = [
+    chartData.passed || 0,
+    chartData.failed || 0,
+    chartData.pending || 0,
+    chartData.notdefined || 0,
+    chartData.ambiguous || 0,
+    chartData.skipped || 0,
+    chartData.rerun || 0,
+  ];
+  var rows = [];
+  for (var i = 0; i < STATUS_ORDER.length; i++) {
+    if (raw[i] > 0) {
+      rows.push([STATUS_ORDER[i], raw[i]]);
+    }
+  }
+  if (rows.length === 0) {
+    rows.push(['No data', 1]);
+  }
+  return google.visualization.arrayToDataTable([['Status', 'Count']].concat(rows));
 }
 
 function drawCombinedDonut(featuresData, scenariosData) {
@@ -28,9 +39,11 @@ function drawCombinedDonut(featuresData, scenariosData) {
     colors: DONUT_COLORS,
     fontSize: 12,
     fontName: '"DM Sans", "Helvetica Neue", Helvetica, Arial, sans-serif',
-    legend: 'none',
-    chartArea: { width: '100%', height: '85%' },
-    tooltip: { trigger: 'focus' },
+    legend: { position: 'bottom', alignment: 'center' },
+    pieSliceText: 'value',
+    pieSliceTextStyle: { fontSize: 12, color: '#1e293b', bold: true },
+    chartArea: { width: '90%', height: '75%' },
+    tooltip: { trigger: 'focus', isHtml: false },
   };
 
   var innerOptions = {
@@ -41,8 +54,10 @@ function drawCombinedDonut(featuresData, scenariosData) {
     fontSize: 11,
     fontName: '"DM Sans", "Helvetica Neue", Helvetica, Arial, sans-serif',
     legend: 'none',
+    pieSliceText: 'value',
+    pieSliceTextStyle: { fontSize: 11, color: '#1e293b', bold: true },
     chartArea: { width: '100%', height: '100%' },
-    tooltip: { trigger: 'focus' },
+    tooltip: { trigger: 'focus', isHtml: false },
   };
 
   var outerChart = new google.visualization.PieChart(outerEl);
