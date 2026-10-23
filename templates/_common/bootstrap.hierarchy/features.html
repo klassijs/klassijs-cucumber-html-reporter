@@ -248,6 +248,22 @@
                                     <% } %>
 
                                     <% if (step.text) { %>
+                                    <% var ltVideoMatch = String(step.text).match(/\[\[LT_VIDEO\]\](\S+)/); %>
+                                    <% if (ltVideoMatch) { %>
+                                    <% var ltModalId = 'lt-vid-' + featureIndex + '_' + scenarioIndex + '_' + stepIndex; %>
+                                    <a href="#<%= ltModalId %>" class="lt-video-open"
+                                       onclick="event.preventDefault();event.stopPropagation();var m=document.getElementById('<%= ltModalId %>');var f=m.querySelector('iframe');if(!f.getAttribute('src')){f.setAttribute('src','<%= ltVideoMatch[1] %>');}m.style.display='flex';">Watch video</a>
+                                    <div id="<%= ltModalId %>" class="lt-video-modal"
+                                         style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.75);align-items:center;justify-content:center"
+                                         onclick="if(event.target===this){this.style.display='none';this.querySelector('iframe').removeAttribute('src');}">
+                                        <div style="position:relative;width:90vw;max-width:1100px;height:80vh;background:#111">
+                                            <button type="button" style="position:absolute;top:8px;right:8px;z-index:1"
+                                                    onclick="event.stopPropagation();var m=document.getElementById('<%= ltModalId %>');m.style.display='none';m.querySelector('iframe').removeAttribute('src');">Close</button>
+                                            <iframe title="LambdaTest video" sandbox="allow-scripts allow-same-origin allow-presentation"
+                                                    style="width:100%;height:100%;border:0"></iframe>
+                                        </div>
+                                    </div>
+                                    <% } else { %>
                                     <a href="#info<%= featureIndex %>_<%= scenarioIndex %><%= stepIndex %>"
                                        data-toggle="collapse" class="show-info toggle">Show Info +</a>
                                     <div id="info<%= featureIndex %>_<%= scenarioIndex %><%= stepIndex %>"
@@ -286,6 +302,7 @@
                                 </div>
 
 
+                                    <% } %>
                                 <% } %>
 
                                     <% if (step.image) { %>
