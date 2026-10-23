@@ -336,12 +336,12 @@
         <div class="keyword"><%= feature.keyword %></div>
         <h1><%= feature.name %></h1>
         <div class="counts">
-          <% if (feature.scenarios.passed) { %><span class="pill passed"><%= feature.scenarios.passed %> passed</span><% } %>
-          <% if (feature.scenarios.failed) { %><span class="pill failed"><%= feature.scenarios.failed %> failed</span><% } %>
-          <% if (feature.scenarios.pending) { %><span class="pill pending"><%= feature.scenarios.pending %> pending</span><% } %>
-          <% if (feature.scenarios.notdefined) { %><span class="pill undefined"><%= feature.scenarios.notdefined %> undefined</span><% } %>
-          <% if (feature.scenarios.skipped) { %><span class="pill skipped"><%= feature.scenarios.skipped %> skipped</span><% } %>
-          <% if (feature.scenarios.ambiguous) { %><span class="pill ambiguous"><%= feature.scenarios.ambiguous %> ambiguous</span><% } %>
+          <% if (feature.scenarios.passed) { %><span class="pill passed" data-count-status="passed"><%= feature.scenarios.passed %> passed</span><% } %>
+          <% if (feature.scenarios.failed) { %><span class="pill failed" data-count-status="failed"><%= feature.scenarios.failed %> failed</span><% } %>
+          <% if (feature.scenarios.pending) { %><span class="pill pending" data-count-status="pending"><%= feature.scenarios.pending %> pending</span><% } %>
+          <% if (feature.scenarios.notdefined) { %><span class="pill undefined" data-count-status="undefined"><%= feature.scenarios.notdefined %> undefined</span><% } %>
+          <% if (feature.scenarios.skipped) { %><span class="pill skipped" data-count-status="skipped"><%= feature.scenarios.skipped %> skipped</span><% } %>
+          <% if (feature.scenarios.ambiguous) { %><span class="pill ambiguous" data-count-status="ambiguous"><%= feature.scenarios.ambiguous %> ambiguous</span><% } %>
         </div>
       </div>
       <% if (feature.description) { %>

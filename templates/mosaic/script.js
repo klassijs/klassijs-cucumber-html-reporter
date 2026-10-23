@@ -92,12 +92,32 @@
     applyVisibility();
   }
 
+  function scenarioVisible(scenario, featureSearch) {
+    const status = scenario.getAttribute('data-status');
+    const matchesFilter = activeFilter === 'all' || status === activeFilter;
+    const haystack = (scenario.getAttribute('data-search') || '') + ' ' + (featureSearch || '');
+    return matchesFilter && (!query() || haystack.includes(query()));
+  }
+
   function applyVisibility() {
     let firstMatch = null;
     document.querySelectorAll('[data-genome="' + tapeMode + '"] .gene, .bar-row').forEach((node) => {
       const visible = matches(node);
       node.classList.toggle('is-hidden', !visible);
       if (visible && !firstMatch) firstMatch = node;
+    });
+    panels.forEach((panel) => {
+      const featureSearch = panel.getAttribute('data-search') || '';
+      let visibleScenarios = 0;
+      panel.querySelectorAll('[data-scenario]').forEach((scenario) => {
+        const show = scenarioVisible(scenario, featureSearch);
+        scenario.classList.toggle('is-hidden', !show);
+        if (show) visibleScenarios += 1;
+      });
+      panel.querySelectorAll('[data-count-status]').forEach((pill) => {
+        pill.classList.toggle('is-hidden', activeFilter !== 'all' && pill.getAttribute('data-count-status') !== activeFilter);
+      });
+      panel.classList.toggle('is-empty', visibleScenarios === 0);
     });
     renderTreemap();
     if (!firstMatch && tiles[0]) firstMatch = tiles[0];
@@ -106,7 +126,8 @@
     }
     if (firstMatch) {
       const selected = controls().find((node) => node.getAttribute('aria-current') === 'true' && matches(node));
-      if (!selected) {
+      const current = document.querySelector('[data-feature]:not([hidden])');
+      if (!selected || (current && current.classList.contains('is-empty'))) {
         showFeature(firstMatch.getAttribute('data-open'));
       }
     }
