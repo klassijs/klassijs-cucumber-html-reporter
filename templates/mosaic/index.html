@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cucumber Feature Report</title>
+    <style>
+      <%= styles %>
+    </style>
+  </head>
+  <body>
+    <%
+      var brandTitle = suite.brandTitle ? suite.brandTitle : 'Cucumberjs Report';
+    %>
+    <a class="skip-link" href="#stage">Skip to feature detail</a>
+    <header class="masthead">
+      <div class="kicker">
+        <p class="brand"><%= brandTitle %></p>
+        <span class="project-name"><%= suite.name.plain %></span>
+        <span class="generated-on" title="<%= suite.time %>"><%= suite.time %></span>
+      </div>
+      <% if (suite.metadata) { %>
+      <dl class="metadata">
+        <% _.map(suite.metadata, function(value, key) { %>
+        <div><dt><%= key %></dt><dd><%= value %></dd></div>
+        <% }) %>
+      </dl>
+      <% } %>
+    </header>
+    <%= features %>
+    <dialog class="lightbox" id="lightbox">
+      <img alt="Screenshot">
+      <form method="dialog"><button type="submit" class="ghost">Close</button></form>
+    </dialog>
+    <script>
+      <%= script %>
+    </script>
+  </body>
+</html>

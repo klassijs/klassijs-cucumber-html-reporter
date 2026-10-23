@@ -1,0 +1,169 @@
+<%
+  function itemStatus(item) {
+    if (item.failed) return 'failed';
+    if (item.ambiguous) return 'ambiguous';
+    if (item.notdefined) return 'undefined';
+    if (item.pending) return 'pending';
+    if (item.skipped) return 'skipped';
+    return 'passed';
+  }
+  function featureStatus(feature) {
+    if (feature.scenarios.failed) return 'failed';
+    if (feature.scenarios.ambiguous) return 'ambiguous';
+    if (feature.scenarios.notdefined) return 'undefined';
+    if (feature.scenarios.pending) return 'pending';
+    if (feature.scenarios.skipped && !feature.scenarios.passed) return 'skipped';
+    return 'passed';
+  }
+  function stepStatus(step) {
+    if (!step.result || !step.result.status) return 'undefined';
+    if (step.result.status === 'undefined') return 'undefined';
+    return step.result.status;
+  }
+  function searchText(feature) {
+    var names = [feature.name || ''];
+    _.each(feature.elements || [], function(element) {
+      if (element.name) names.push(element.name);
+    });
+    return names.join(' ').toLowerCase();
+  }
+  function renderTable(rows) {
+    if (!rows || !rows.length || !rows[0].cells) return '';
+    var html = '<div class="scrollBar"><table class="arguments"><thead><tr>';
+    _.each(rows[0].cells, function(cell) { html += '<th>' + _.escape(cell) + '</th>'; });
+    html += '</tr></thead><tbody>';
+    _.each(rows.slice(1), function(row) {
+      html += '<tr>';
+      _.each(row.cells || [], function(cell) { html += '<td>' + _.escape(cell) + '</td>'; });
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    return html;
+  }
+%>
+<p class="empty-filter is-hidden" data-empty-filter>No features match this filter.</p>
+<% _.each(suite.features, function(feature, featureIndex) { %>
+<% var featureId = 'feature-' + guid(); %>
+<% var fStatus = featureStatus(feature); %>
+<details class="feature" id="<%= featureId %>" data-feature data-status="<%= fStatus %>" data-search="<%= searchText(feature) %>" data-title="<%= feature.name %>">
+  <summary>
+    <div>
+      <% if (feature.tags) { %>
+      <div class="tags"><% _.each(feature.tags, function(tag) { %><span class="tag"><%= tag.name %></span><% }); %></div>
+      <% } %>
+      <div class="feature-kicker"><span class="keyword"><%= feature.keyword %></span></div>
+      <div class="feature-title"><%= feature.name %></div>
+    </div>
+    <div class="counts">
+      <% if (feature.scenarios.passed) { %><span class="pill passed" title="<%= feature.scenarios.passed %> passed"><%= feature.scenarios.passed %> passed</span><% } %>
+      <% if (feature.scenarios.failed) { %><span class="pill failed" title="<%= feature.scenarios.failed %> failed"><%= feature.scenarios.failed %> failed</span><% } %>
+      <% if (feature.scenarios.pending) { %><span class="pill pending" title="<%= feature.scenarios.pending %> pending"><%= feature.scenarios.pending %> pending</span><% } %>
+      <% if (feature.scenarios.notdefined) { %><span class="pill undefined" title="<%= feature.scenarios.notdefined %> undefined"><%= feature.scenarios.notdefined %> undefined</span><% } %>
+      <% if (feature.scenarios.skipped) { %><span class="pill skipped" title="<%= feature.scenarios.skipped %> skipped"><%= feature.scenarios.skipped %> skipped</span><% } %>
+      <% if (feature.scenarios.ambiguous) { %><span class="pill ambiguous" title="<%= feature.scenarios.ambiguous %> ambiguous"><%= feature.scenarios.ambiguous %> ambiguous</span><% } %>
+    </div>
+  </summary>
+  <div class="feature-body">
+    <% if (feature.description) { %>
+    <div class="description"><%= feature.description.replace(/\n/g, '<br/>') %></div>
+    <% } %>
+    <% _.each(feature.elements, function(element, scenarioIndex) { %>
+    <% var sStatus = itemStatus(element); %>
+    <details class="scenario" data-scenario data-status="<%= sStatus %>" data-search="<%= (element.name || '').toLowerCase() %>">
+      <summary>
+        <div>
+          <% var scenarioTagsOnly = feature.tags && element.tags ? _.drop(element.tags, feature.tags.length) : element.tags; %>
+          <% if (scenarioTagsOnly && scenarioTagsOnly.length) { %>
+          <div class="tags"><% _.each(scenarioTagsOnly, function(tag) { %><span class="tag"><%= tag.name %></span><% }); %></div>
+          <% } %>
+          <div class="scenario-kicker"><span class="keyword"><%= element.keyword %></span></div>
+          <div class="scenario-title"><%= element.name %></div>
+          <% if (element.timestamp) { %><span class="timestamp"><%= element.timestamp %></span><% } %>
+        </div>
+        <div class="counts">
+          <% if (element.retried) { %><span class="pill rerun" title="Re-runs : <%= element.retried %>">Re-runs : <%= element.retried %></span><% } %>
+          <% if (element.passed) { %><span class="pill passed"><%= element.passed %> passed</span><% } %>
+          <% if (element.failed) { %><span class="pill failed"><%= element.failed %> failed</span><% } %>
+          <% if (element.pending) { %><span class="pill pending"><%= element.pending %> pending</span><% } %>
+          <% if (element.notdefined) { %><span class="pill undefined"><%= element.notdefined %> undefined</span><% } %>
+          <% if (element.skipped) { %><span class="pill skipped"><%= element.skipped %> skipped</span><% } %>
+          <% if (element.ambiguous) { %><span class="pill ambiguous"><%= element.ambiguous %> ambiguous</span><% } %>
+        </div>
+      </summary>
+      <div class="scenario-body">
+        <% if (element.notes) { %><div class="description"><%= element.notes %></div><% } %>
+        <% if (element.description) { %>
+        <div class="description"><%= element.description.trim().replace(/\n/g, '<br/>') %></div>
+        <% } %>
+        <% _.each(element.steps, function(step, stepIndex) { %>
+        <% if (!step.hidden || step.image || step.text || (step.result && step.result.status === 'failed')) { %>
+        <% var st = stepStatus(step); %>
+        <div class="step">
+          <span class="dot <%= st %>" title="<%= st %>"></span>
+          <div>
+            <span class="step-keyword"><%= step.keyword %></span>
+            <span><%- step.name %></span>
+            <% if (step.doc_string && step.doc_string.value) { %>
+            <pre class="doc-string"><%- step.doc_string.value %></pre>
+            <% } %>
+            <% if (step.arguments) { %>
+              <% for (var i = 0; i < step.arguments.length; i++) { %>
+                <% if (step.arguments[i]["rows"]) { %>
+                  <%= renderTable(step.arguments[i]["rows"]) %>
+                <% } %>
+                <% if (step.arguments[i]["content"]) { %>
+                <pre class="info"><%= step.arguments[i]["content"].replace(/</g, '(').replace(/>/g, ')') %></pre>
+                <% } %>
+              <% } %>
+            <% } %>
+            <% if (step.rows) { %>
+              <%= renderTable(step.rows) %>
+            <% } %>
+            <% if (step.result && step.result.status === 'undefined' && step.name) { %>
+            <pre class="info">Then(/^<%= step.name.replace(/"[^"]*"/g, '"\(\[\^\"\]\*\)"') %>$/, function(<% for (var i=1; i<(step.name.split('"').length / 2); i++) { %>arg<%= i %>, <% } %>callback) {
+  callback(null, 'pending');
+});</pre>
+            <% } %>
+            <% if (step.result && step.result.error_message) { %>
+            <details class="embed">
+              <summary>Error</summary>
+              <pre class="info"><%= step.result.error_message.replace(/</g, '(').replace(/>/g, ')') %></pre>
+            </details>
+            <% } %>
+            <% if (step.text) { %>
+              <% var ltVideoMatch = String(step.text).match(/\[\[LT_VIDEO\]\](\S+)/); %>
+              <% if (ltVideoMatch) { %>
+                <% var ltModalId = 'lt-vid-' + featureIndex + '_' + scenarioIndex + '_' + stepIndex; %>
+                <button type="button" class="lt-video-open" onclick="event.preventDefault();event.stopPropagation();var m=document.getElementById('<%= ltModalId %>');var f=m.querySelector('iframe');if(!f.getAttribute('src')){f.setAttribute('src','<%= ltVideoMatch[1] %>');}m.style.display='flex';">Watch video</button>
+                <div id="<%= ltModalId %>" class="lt-video-modal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.75);align-items:center;justify-content:center" onclick="if(event.target===this){this.style.display='none';this.querySelector('iframe').removeAttribute('src');}">
+                  <div style="position:relative;width:90vw;max-width:1100px;height:80vh;background:#111">
+                    <button type="button" style="position:absolute;top:8px;right:8px;z-index:1" onclick="event.stopPropagation();var m=document.getElementById('<%= ltModalId %>');m.style.display='none';m.querySelector('iframe').removeAttribute('src');">Close</button>
+                    <iframe title="LambdaTest video" sandbox="allow-scripts allow-same-origin allow-presentation" style="width:100%;height:100%;border:0"></iframe>
+                  </div>
+                </div>
+              <% } else { %>
+                <details class="embed">
+                  <summary>Info</summary>
+                  <pre class="info"><%= step.text %></pre>
+                </details>
+              <% } %>
+            <% } %>
+            <% if (step.image) { %>
+            <details class="embed">
+              <summary>Screenshot</summary>
+              <img class="screenshot" alt="Step screenshot" src="<%= step.image %>">
+            </details>
+            <% } %>
+          </div>
+          <% if (step.result) { %>
+          <span class="step-duration"><%= calculateDuration(step.result.duration) %></span>
+          <% } %>
+        </div>
+        <% } %>
+        <% }); %>
+      </div>
+    </details>
+    <% }); %>
+  </div>
+</details>
+<% }); %>

@@ -5,7 +5,7 @@
 ![npm](https://img.shields.io/npm/v/klassijs-cucumber-html-reporter) [![Maintainability](https://api.codeclimate.com/v1/badges/aa67292c3ab413cb0d32/maintainability)](https://codeclimate.com/github/klassijs/klassi-js/maintainability) ![NPM](https://img.shields.io/npm/l/klassijs-cucumber-html-reporter) [![contributors](https://img.shields.io/github/contributors/klassijs/klassijs-cucumber-html-reporter.svg)](https://github.com/klassijs/klassijs-cucumber-html-reporter/graphs/contributors)
 
 
-> Available HTML themes: `['bootstrap', 'hierarchy', 'foundation', 'simple']`
+> Available HTML themes: `['bootstrap', 'hierarchy', 'foundation', 'simple', 'modern', 'mosaic']`
 
 ## Preview of HTML Reports
 
@@ -15,24 +15,32 @@ Provide a Cucumber JSON report file created from your framework and this module 
 2. [Hierarchical Feature Structure Theme Reports With Pie Chart][3]
 3. [Foundation Theme Reports][5]
 4. [Simple Theme Reports][6]
+5. [Modern Theme Reports][12]
+6. [Mosaic Theme Reports][13]
 
 
 ## Snapshot of Bootstrap Report
 ![Alt text](./samples/html_report_snapshots/cucumber_report_bootstrap_snapshot.png "Snapshot - Bootstrap Report")
+
+## Snapshot of Modern Report
+![Alt text](./samples/html_report_snapshots/cucumber_report_modern_snapshot.png "Snapshot - Modern Report")
+
+## Snapshot of Mosaic Report
+![Alt text](./samples/html_report_snapshots/cucumber_report_mosaic_snapshot.png "Snapshot - Mosaic Report")
 
 ###### More snapshots are available [here][9]
 
 ## Install
 
 ``` bash
-yarn add klassijs-cucumber-html-reporter -D
-pnpm add klassijs-cucumber-html-reporter -D
-npm install klassijs-cucumber-html-reporter --save-dev
+yarn add klassijs-cucumber-html-reporter
+pnpm add klassijs-cucumber-html-reporter
+npm install klassijs-cucumber-html-reporter
 ```
 
 ***Notes:***
 
-* Latest version supports Cucumber v12
+* Latest version supports Cucumber v13
 * Install `cucumber-html-reporter@5.5.0` for cucumber version `< Cucumber@8`
 
 
@@ -102,12 +110,16 @@ $ cucumberjs test/features/ -f summary -f json:test/report/cucumber_report.json
 ## Options
 
 #### `theme`
-Available: `['bootstrap', 'hierarchy', 'foundation', 'simple']`
+Available: `['bootstrap', 'hierarchy', 'foundation', 'simple', 'modern', 'mosaic']`
 Type: `String`
 
 Select the Theme for your HTML report.
 
 N.B: Hierarchy theme is best suitable if your features are organized under features-folder hierarchy. Each folder will be rendered as a HTML Tab. It supports up to 3-level of nested folder hierarchy structure.
+
+`modern` is a single-column report with a sticky sidebar for search, status filters, and a feature jump list. Features start collapsed so large suites stay scannable.
+
+`mosaic` is a visual run dashboard: a dual scenario/step ring, a full-suite scenario genome, a feature treemap sized by weight, duration bars, and folder mix. Click any chart to open the same scenarios, steps, and attachments as the other themes.
 
 
 #### `jsonFile`
@@ -312,6 +324,8 @@ Created by [Kushang Gajjar](https://github.com/gkushang)
 [9]: https://github.com/klassijs/klassijs-cucumber-html-reporter/blob/develop/samples/snapshots.md
 [10]: https://github.com/klassijs/klassijs-cucumber-html-reporter/blob/develop/CHANGELOG.md
 [11]: https://github.com/klassijs/klassijs-cucumber-html-reporter/blob/develop/samples/snapshots.md#with-metadata
+[12]: http://htmlpreview.github.io/?https://github.com/klassijs/klassijs-cucumber-html-reporter/blob/develop/samples/html_reports/cucumber_report_modern.html "Modern Theme Reports"
+[13]: http://htmlpreview.github.io/?https://github.com/klassijs/klassijs-cucumber-html-reporter/blob/develop/samples/html_reports/cucumber_report_mosaic.html "Mosaic Theme Reports"
 [twitter]: https://twitter.com/larryg_01
 
 
