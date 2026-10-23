@@ -173,7 +173,15 @@
         search: searchText(item.feature),
         scenarios: item.feature.scenarios.count || (item.feature.elements ? item.feature.elements.length : 1),
         time: item.feature.time || 0,
-        label: countLabel(item.feature)
+        label: countLabel(item.feature),
+        counts: {
+          failed: item.feature.scenarios.failed || 0,
+          ambiguous: item.feature.scenarios.ambiguous || 0,
+          undefined: item.feature.scenarios.notdefined || 0,
+          pending: item.feature.scenarios.pending || 0,
+          skipped: item.feature.scenarios.skipped || 0,
+          passed: item.feature.scenarios.passed || 0
+        }
       };
     })
   };
@@ -275,7 +283,7 @@
   <div class="charts">
     <section class="chart-card">
       <p class="panel-kicker">Feature mosaic</p>
-      <h2 class="panel-title">Area is scenario weight. Color is worst status.</h2>
+      <h2 class="panel-title">Area is scenario count. Color is each scenario's status.</h2>
       <div class="treemap" data-treemap aria-label="Feature treemap"></div>
     </section>
     <div class="side-charts">

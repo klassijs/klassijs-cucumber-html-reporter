@@ -119,7 +119,7 @@ N.B: Hierarchy theme is best suitable if your features are organized under featu
 
 `modern` is a single-column report with a sticky sidebar for search, status filters, and a feature jump list. Features start collapsed so large suites stay scannable.
 
-`mosaic` is a visual run dashboard: a dual scenario/step ring, a full-suite scenario genome, a feature treemap sized by weight, duration bars, and folder mix. Click any chart to open the same scenarios, steps, and attachments as the other themes.
+`mosaic` is a visual run dashboard: a dual scenario/step ring, a full-suite scenario genome, a feature treemap sized by scenario count, duration bars, and folder mix. Click any chart to open the same scenarios, steps, and attachments as the other themes.
 
 
 #### `jsonFile`

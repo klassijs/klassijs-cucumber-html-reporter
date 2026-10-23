@@ -149,50 +149,80 @@
     }
   }
 
+  function featureVisible(feature) {
+    const counts = feature.counts || {};
+    const matchesFilter = activeFilter === 'all'
+      || feature.status === activeFilter
+      || Number(counts[activeFilter]) > 0;
+    const matchesSearch = !query() || (feature.search || '').includes(query());
+    return matchesFilter && matchesSearch;
+  }
+
+  function statusNodes(feature) {
+    const order = ['failed', 'ambiguous', 'undefined', 'pending', 'skipped', 'passed'];
+    const slices = order.map((status) => ({
+      status,
+      value: Number((feature.counts || {})[status]) || 0,
+    })).filter((slice) => slice.value > 0);
+    if (slices.length) return slices;
+    return [{ status: feature.status || 'passed', value: 1 }];
+  }
+
   function renderTreemap() {
     if (!treemap) return;
-    const gap = 3;
+    const featureGap = 4;
+    const sliceGap = 2;
     const width = treemap.clientWidth || 640;
     const height = treemap.clientHeight || 380;
-    const visible = chartData.features.filter((feature) => {
-      const matchesFilter = activeFilter === 'all' || feature.status === activeFilter;
-      const matchesSearch = !query() || (feature.search || '').includes(query());
-      return matchesFilter && matchesSearch;
-    });
+    const visible = chartData.features.filter(featureVisible);
     const nodes = visible.map((feature) => ({
       ...feature,
-      value: Math.max(1, Number(feature.scenarios) || 1) * 4 + Math.max(0, Math.round((Number(feature.time) || 0) / 10000000)),
+      value: Math.max(1, Number(feature.scenarios) || 1),
     })).sort((a, b) => b.value - a.value);
     split(nodes, 0, 0, width, height);
     treemap.innerHTML = '';
     nodes.forEach((node) => {
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'tile ' + node.status;
-      button.setAttribute('data-open', node.id);
-      button.setAttribute('data-status', node.status);
-      button.setAttribute('data-search', node.search);
-      button.style.left = node.x + gap / 2 + 'px';
-      button.style.top = node.y + gap / 2 + 'px';
-      button.style.width = Math.max(node.w - gap, 0) + 'px';
-      button.style.height = Math.max(node.h - gap, 0) + 'px';
-      button.title = node.name + ' · ' + node.status;
-      if (node.w > 108 && node.h > 56) {
-        const status = document.createElement('span');
-        status.className = 'tile-status';
-        status.textContent = node.status;
-        const name = document.createElement('span');
-        name.className = 'tile-name';
-        name.textContent = node.name;
-        const meta = document.createElement('span');
-        meta.className = 'tile-meta';
-        meta.textContent = node.label;
-        button.append(status, name, meta);
-      }
-      button.addEventListener('click', function () {
-        openFromControl(button);
+      const slices = statusNodes(node);
+      split(slices, node.x, node.y, node.w, node.h);
+      const named = slices.slice().sort((a, b) => (b.w * b.h) - (a.w * a.h))[0];
+      slices.forEach((slice) => {
+        const button = document.createElement('button');
+        const innerGap = slices.length > 1 ? sliceGap : featureGap;
+        button.type = 'button';
+        button.className = 'tile ' + slice.status;
+        button.setAttribute('data-open', node.id);
+        button.setAttribute('data-status', slice.status);
+        button.setAttribute('data-search', node.search);
+        button.style.left = slice.x + innerGap / 2 + 'px';
+        button.style.top = slice.y + innerGap / 2 + 'px';
+        button.style.width = Math.max(slice.w - innerGap, 0) + 'px';
+        button.style.height = Math.max(slice.h - innerGap, 0) + 'px';
+        button.title = node.name + ' · ' + slice.value + ' ' + slice.status;
+        if (slice.w > 88 && slice.h > 48) {
+          const status = document.createElement('span');
+          status.className = 'tile-status';
+          status.textContent = slice.status;
+          button.append(status);
+          if (slice === named && slice.w > 108 && slice.h > 56) {
+            const name = document.createElement('span');
+            name.className = 'tile-name';
+            name.textContent = node.name;
+            const meta = document.createElement('span');
+            meta.className = 'tile-meta';
+            meta.textContent = node.label;
+            button.append(name, meta);
+          } else if (slice.w > 72) {
+            const meta = document.createElement('span');
+            meta.className = 'tile-meta';
+            meta.textContent = slice.value + ' ' + slice.status;
+            button.append(meta);
+          }
+        }
+        button.addEventListener('click', function () {
+          openFromControl(button);
+        });
+        treemap.appendChild(button);
       });
-      treemap.appendChild(button);
     });
     tiles = Array.from(treemap.querySelectorAll('[data-open]'));
     const current = document.querySelector('[data-feature]:not([hidden])');
