@@ -132,12 +132,11 @@
       acc += nodes[index].value;
       index += 1;
     }
+    if (index >= nodes.length - 1) {
+      index = nodes.length - 2;
+    }
     const left = nodes.slice(0, index + 1);
     const right = nodes.slice(index + 1);
-    if (!right.length) {
-      split(left, x, y, width, height);
-      return;
-    }
     if (width >= height) {
       const leftWidth = width * (sum(left) / total);
       split(left, x, y, leftWidth, height);
@@ -180,7 +179,7 @@
       value: Math.max(1, Number(feature.scenarios) || 1),
     })).sort((a, b) => b.value - a.value);
     split(nodes, 0, 0, width, height);
-    treemap.innerHTML = '';
+    const fragment = document.createDocumentFragment();
     nodes.forEach((node) => {
       const slices = statusNodes(node);
       split(slices, node.x, node.y, node.w, node.h);
@@ -221,9 +220,10 @@
         button.addEventListener('click', function () {
           openFromControl(button);
         });
-        treemap.appendChild(button);
+        fragment.appendChild(button);
       });
     });
+    treemap.replaceChildren(fragment);
     tiles = Array.from(treemap.querySelectorAll('[data-open]'));
     const current = document.querySelector('[data-feature]:not([hidden])');
     if (current) {
