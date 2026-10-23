@@ -55,18 +55,21 @@
       const scenarios = Array.from(feature.querySelectorAll('[data-scenario]'));
       let visibleScenarios = 0;
 
+      const featureSearch = feature.getAttribute('data-search') || '';
       scenarios.forEach((scenario) => {
         const matchesStatus = status === 'all' || scenario.getAttribute('data-status') === status;
-        const matchesQuery = !query || (scenario.getAttribute('data-search') || '').includes(query);
+        const haystack = (scenario.getAttribute('data-search') || '') + ' ' + featureSearch;
+        const matchesQuery = !query || haystack.includes(query);
         const show = matchesStatus && matchesQuery;
         scenario.classList.toggle('is-hidden', !show);
         if (show) visibleScenarios += 1;
       });
 
-      const featureMatches =
-        visibleScenarios > 0 ||
-        ((status === 'all' || feature.getAttribute('data-status') === status) &&
-          (!query || (feature.getAttribute('data-search') || '').includes(query)));
+      feature.querySelectorAll('[data-count-status]').forEach((pill) => {
+        pill.classList.toggle('is-hidden', status !== 'all' && pill.getAttribute('data-count-status') !== status);
+      });
+
+      const featureMatches = visibleScenarios > 0;
 
       feature.classList.toggle('is-hidden', !featureMatches);
       if (featureMatches && (query || status !== 'all')) {

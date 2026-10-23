@@ -55,12 +55,12 @@
       <div class="feature-title"><%= feature.name %></div>
     </div>
     <div class="counts">
-      <% if (feature.scenarios.passed) { %><span class="pill passed" title="<%= feature.scenarios.passed %> passed"><%= feature.scenarios.passed %> passed</span><% } %>
-      <% if (feature.scenarios.failed) { %><span class="pill failed" title="<%= feature.scenarios.failed %> failed"><%= feature.scenarios.failed %> failed</span><% } %>
-      <% if (feature.scenarios.pending) { %><span class="pill pending" title="<%= feature.scenarios.pending %> pending"><%= feature.scenarios.pending %> pending</span><% } %>
-      <% if (feature.scenarios.notdefined) { %><span class="pill undefined" title="<%= feature.scenarios.notdefined %> undefined"><%= feature.scenarios.notdefined %> undefined</span><% } %>
-      <% if (feature.scenarios.skipped) { %><span class="pill skipped" title="<%= feature.scenarios.skipped %> skipped"><%= feature.scenarios.skipped %> skipped</span><% } %>
-      <% if (feature.scenarios.ambiguous) { %><span class="pill ambiguous" title="<%= feature.scenarios.ambiguous %> ambiguous"><%= feature.scenarios.ambiguous %> ambiguous</span><% } %>
+      <% if (feature.scenarios.passed) { %><span class="pill passed" data-count-status="passed" title="<%= feature.scenarios.passed %> passed"><%= feature.scenarios.passed %> passed</span><% } %>
+      <% if (feature.scenarios.failed) { %><span class="pill failed" data-count-status="failed" title="<%= feature.scenarios.failed %> failed"><%= feature.scenarios.failed %> failed</span><% } %>
+      <% if (feature.scenarios.pending) { %><span class="pill pending" data-count-status="pending" title="<%= feature.scenarios.pending %> pending"><%= feature.scenarios.pending %> pending</span><% } %>
+      <% if (feature.scenarios.notdefined) { %><span class="pill undefined" data-count-status="undefined" title="<%= feature.scenarios.notdefined %> undefined"><%= feature.scenarios.notdefined %> undefined</span><% } %>
+      <% if (feature.scenarios.skipped) { %><span class="pill skipped" data-count-status="skipped" title="<%= feature.scenarios.skipped %> skipped"><%= feature.scenarios.skipped %> skipped</span><% } %>
+      <% if (feature.scenarios.ambiguous) { %><span class="pill ambiguous" data-count-status="ambiguous" title="<%= feature.scenarios.ambiguous %> ambiguous"><%= feature.scenarios.ambiguous %> ambiguous</span><% } %>
     </div>
   </summary>
   <div class="feature-body">
