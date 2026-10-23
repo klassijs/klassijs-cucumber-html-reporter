@@ -148,11 +148,12 @@
     }
   }
 
+  function featureCount(feature, status) {
+    return Number((feature.counts || {})[status]) || 0;
+  }
+
   function featureVisible(feature) {
-    const counts = feature.counts || {};
-    const matchesFilter = activeFilter === 'all'
-      || feature.status === activeFilter
-      || Number(counts[activeFilter]) > 0;
+    const matchesFilter = activeFilter === 'all' || featureCount(feature, activeFilter) > 0;
     const matchesSearch = !query() || (feature.search || '').includes(query());
     return matchesFilter && matchesSearch;
   }
@@ -161,9 +162,10 @@
     const order = ['failed', 'ambiguous', 'undefined', 'pending', 'skipped', 'passed'];
     const slices = order.map((status) => ({
       status,
-      value: Number((feature.counts || {})[status]) || 0,
-    })).filter((slice) => slice.value > 0);
+      value: featureCount(feature, status),
+    })).filter((slice) => slice.value > 0 && (activeFilter === 'all' || slice.status === activeFilter));
     if (slices.length) return slices;
+    if (activeFilter !== 'all') return [];
     return [{ status: feature.status || 'passed', value: 1 }];
   }
 
@@ -176,12 +178,15 @@
     const visible = chartData.features.filter(featureVisible);
     const nodes = visible.map((feature) => ({
       ...feature,
-      value: Math.max(1, Number(feature.scenarios) || 1),
-    })).sort((a, b) => b.value - a.value);
+      value: activeFilter === 'all'
+        ? Math.max(1, Number(feature.scenarios) || 1)
+        : featureCount(feature, activeFilter),
+    })).filter((feature) => feature.value > 0).sort((a, b) => b.value - a.value);
     split(nodes, 0, 0, width, height);
     const fragment = document.createDocumentFragment();
     nodes.forEach((node) => {
       const slices = statusNodes(node);
+      if (!slices.length) return;
       split(slices, node.x, node.y, node.w, node.h);
       const named = slices.slice().sort((a, b) => (b.w * b.h) - (a.w * a.h))[0];
       slices.forEach((slice) => {
@@ -208,7 +213,7 @@
             name.textContent = node.name;
             const meta = document.createElement('span');
             meta.className = 'tile-meta';
-            meta.textContent = node.label;
+            meta.textContent = activeFilter === 'all' ? node.label : (slice.value + ' ' + slice.status);
             button.append(name, meta);
           } else if (slice.w > 72) {
             const meta = document.createElement('span');
