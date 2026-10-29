@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cucumber Feature Report</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,650&display=swap" rel="stylesheet">
+    <style>
+      <%= styles %>
+    </style>
+  </head>
+  <body>
+    <%
+      var brandTitle = suite.brandTitle ? suite.brandTitle : 'Cucumberjs Report';
+      var total = suite.scenarios.getTotal();
+      var passPct = total > 0 ? Math.round((suite.scenarios.passed / total) * 100) : 0;
+      var denom = Math.max(total, 1);
+      var stop = 0;
+      function slice(count, color) {
+        if (!count) return '';
+        var start = stop;
+        stop += (count / denom) * 100;
+        return color + ' ' + start + '% ' + stop + '%,';
+      }
+      var donut = slice(suite.scenarios.passed, '#2f6b4f')
+        + slice(suite.scenarios.failed, '#b42318')
+        + slice(suite.scenarios.pending, '#7a6418')
+        + slice(suite.scenarios.notdefined, '#0f6c7a')
+        + slice(suite.scenarios.skipped, '#9a6b2f')
+        + slice(suite.scenarios.ambiguous, '#3d5a9a');
+      donut = donut.replace(/,$/, '') || '#3a342c 0 100%';
+    %>
+    <a class="skip-link" href="#results">Skip to results</a>
+    <div class="shell">
+      <aside class="rail">
+        <p class="brand"><%= brandTitle %></p>
+        <div class="project-name"><%= suite.name.plain %></div>
+        <div class="generated-on" title="<%= suite.time %>"><%= suite.time %></div>
+
+        <div class="donut-wrap">
+          <div class="donut" style="--donut: conic-gradient(<%= donut %>)" aria-hidden="true"></div>
+          <div class="donut-copy">
+            <strong><%= passPct %>%</strong>
+            <span>scenario pass rate</span>
+          </div>
+        </div>
+
+        <ul class="stat-list">
+          <li><span>Features</span><b><%= suite.features ? suite.features.length : 0 %></b></li>
+          <li><span>Scenarios</span><b><%= total %></b></li>
+          <li><span>Passed</span><b><%= suite.scenarios.passed %></b></li>
+          <li><span>Failed</span><b><%= suite.scenarios.failed %></b></li>
+          <% if (suite.scenarios.pending) { %><li><span>Pending</span><b><%= suite.scenarios.pending %></b></li><% } %>
+          <% if (suite.scenarios.notdefined) { %><li><span>Undefined</span><b><%= suite.scenarios.notdefined %></b></li><% } %>
+          <% if (suite.scenarios.skipped) { %><li><span>Skipped</span><b><%= suite.scenarios.skipped %></b></li><% } %>
+          <% if (suite.scenarios.ambiguous) { %><li><span>Ambiguous</span><b><%= suite.scenarios.ambiguous %></b></li><% } %>
+          <% if (suite.scenarios.rerun) { %><li><span>Re-run</span><b><%= suite.scenarios.rerun %></b></li><% } %>
+        </ul>
+
+        <div class="filters">
+          <h2>Find</h2>
+          <label class="visually-hidden" for="report-search" style="position:absolute;left:-999px">Search scenarios</label>
+          <input id="report-search" class="search" type="search" placeholder="Search features or scenarios">
+          <h2>Status</h2>
+          <div class="chips" role="group" aria-label="Filter by status">
+            <button type="button" class="chip" data-filter="all" aria-pressed="true">All</button>
+            <button type="button" class="chip" data-filter="failed" aria-pressed="false">Failed</button>
+            <button type="button" class="chip" data-filter="passed" aria-pressed="false">Passed</button>
+            <% if (suite.scenarios.pending) { %><button type="button" class="chip" data-filter="pending" aria-pressed="false">Pending</button><% } %>
+            <% if (suite.scenarios.notdefined) { %><button type="button" class="chip" data-filter="undefined" aria-pressed="false">Undefined</button><% } %>
+            <% if (suite.scenarios.skipped) { %><button type="button" class="chip" data-filter="skipped" aria-pressed="false">Skipped</button><% } %>
+            <% if (suite.scenarios.ambiguous) { %><button type="button" class="chip" data-filter="ambiguous" aria-pressed="false">Ambiguous</button><% } %>
+          </div>
+        </div>
+
+        <nav class="jump" aria-label="Features">
+          <h2>Features</h2>
+          <div id="feature-jump"></div>
+          <button type="button" class="jump-more" data-jump-more hidden>Show all</button>
+        </nav>
+
+        <% if (suite.metadata) { %>
+        <div class="metadata">
+          <h2>Metadata</h2>
+          <dl>
+            <% _.map(suite.metadata, function(value, key) { %>
+            <div>
+              <dt><%= key %></dt>
+              <dd><%= value %></dd>
+            </div>
+            <% }) %>
+          </dl>
+        </div>
+        <% } %>
+      </aside>
+
+      <main class="stage" id="results">
+        <div class="stage-toolbar">
+          <h2>Results</h2>
+          <button type="button" class="ghost" data-expand-all>Expand all</button>
+        </div>
+        <%= features %>
+      </main>
+    </div>
+
+    <dialog class="lightbox" id="lightbox">
+      <img alt="Screenshot">
+      <form method="dialog"><button type="submit" class="ghost">Close</button></form>
+    </dialog>
+
+    <script>
+      <%= script %>
+    </script>
+  </body>
+</html>

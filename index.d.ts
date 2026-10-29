@@ -1,5 +1,5 @@
 interface Options {
-  theme: 'bootstrap' | 'hierarchy' | 'foundation' | 'simple',
+  theme: 'bootstrap' | 'hierarchy' | 'foundation' | 'simple' | 'modern' | 'mosaic',
   jsonFile?: string,
   jsonDir?: string, 
   output: string,

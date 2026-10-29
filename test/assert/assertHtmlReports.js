@@ -21,6 +21,8 @@ export default function assertHtmlReports(outputDirectory) {
   const bootstrapHtmlFile = path.join(outputDirectory, 'cucumber_report_bootstrap.html');
   const foundationHtmlFile = path.join(outputDirectory, 'cucumber_report_foundation.html');
   const simpleHtmlFile = path.join(outputDirectory, 'cucumber_report_simple.html');
+  const modernHtmlFile = path.join(outputDirectory, 'cucumber_report_modern.html');
+  const mosaicHtmlFile = path.join(outputDirectory, 'cucumber_report_mosaic.html');
 
   isReportExists(hierarchyHtmlFile).should.be.equal(
     true,
@@ -35,6 +37,8 @@ export default function assertHtmlReports(outputDirectory) {
     'foundationHtmlFile file ' + foundationHtmlFile + ' does not exist'
   );
   isReportExists(simpleHtmlFile).should.be.equal(true, 'simpleHtmlFile file ' + simpleHtmlFile + ' does not exist');
+  isReportExists(modernHtmlFile).should.be.equal(true, 'modernHtmlFile file ' + modernHtmlFile + ' does not exist');
+  isReportExists(mosaicHtmlFile).should.be.equal(true, 'mosaicHtmlFile file ' + mosaicHtmlFile + ' does not exist');
   isDirectoryExists(path.join(outputDirectory, '..', '..', 'screenshots')).should.be.equal(
     true,
     'screenshots directory does not exists, at "parentDirectory/screenshots"'
