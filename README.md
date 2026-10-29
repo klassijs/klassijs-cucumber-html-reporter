@@ -5,28 +5,27 @@
 ![npm](https://img.shields.io/npm/v/klassijs-cucumber-html-reporter) [![Maintainability](https://api.codeclimate.com/v1/badges/aa67292c3ab413cb0d32/maintainability)](https://codeclimate.com/github/klassijs/klassi-js/maintainability) ![NPM](https://img.shields.io/npm/l/klassijs-cucumber-html-reporter) [![contributors](https://img.shields.io/github/contributors/klassijs/klassijs-cucumber-html-reporter.svg)](https://github.com/klassijs/klassijs-cucumber-html-reporter/graphs/contributors)
 
 
-> Available HTML themes: `['bootstrap', 'hierarchy', 'foundation', 'simple', 'modern', 'mosaic']`
+> Available HTML themes: `['modern', 'mosaic', 'bootstrap', 'hierarchy', 'foundation', 'simple']`
 
 ## Preview of HTML Reports
 
 Provide a Cucumber JSON report file created from your framework and this module will generate a pretty HTML report. Choose the best suitable HTML theme and dashboard for your CI from the available HTML reporter style.
 
-1. [Bootstrap Theme Reports with Pie Chart][4]
-2. [Hierarchical Feature Structure Theme Reports With Pie Chart][3]
-3. [Foundation Theme Reports][5]
-4. [Simple Theme Reports][6]
-5. [Modern Theme Reports][12]
-6. [Mosaic Theme Reports][13]
-
-
-## Snapshot of Bootstrap Report
-![Alt text](./samples/html_report_snapshots/cucumber_report_bootstrap_snapshot.png "Snapshot - Bootstrap Report")
+1. [Modern Theme Reports][12]
+2. [Mosaic Theme Reports][13]
+3. [Bootstrap Theme Reports with Pie Chart][4]
+4. [Hierarchical Feature Structure Theme Reports With Pie Chart][3]
+5. [Foundation Theme Reports][5]
+6. [Simple Theme Reports][6]
 
 ## Snapshot of Modern Report
 ![Alt text](./samples/html_report_snapshots/cucumber_report_modern_snapshot.png "Snapshot - Modern Report")
 
 ## Snapshot of Mosaic Report
 ![Alt text](./samples/html_report_snapshots/cucumber_report_mosaic_snapshot.png "Snapshot - Mosaic Report")
+
+## Snapshot of Bootstrap Report
+![Alt text](./samples/html_report_snapshots/cucumber_report_bootstrap_snapshot.png "Snapshot - Bootstrap Report")
 
 ###### More snapshots are available [here][9]
 
