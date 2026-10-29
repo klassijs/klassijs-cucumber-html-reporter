@@ -18,14 +18,8 @@ Provide a Cucumber JSON report file created from your framework and this module 
 5. [Foundation Theme Reports][5]
 6. [Simple Theme Reports][6]
 
-## Snapshot of Modern Report
-![Alt text](./samples/html_report_snapshots/cucumber_report_modern_snapshot.png "Snapshot - Modern Report")
-
 ## Snapshot of Mosaic Report
 ![Alt text](./samples/html_report_snapshots/cucumber_report_mosaic_snapshot.png "Snapshot - Mosaic Report")
-
-## Snapshot of Bootstrap Report
-![Alt text](./samples/html_report_snapshots/cucumber_report_bootstrap_snapshot.png "Snapshot - Bootstrap Report")
 
 ###### More snapshots are available [here][9]
 
@@ -48,14 +42,14 @@ npm install klassijs-cucumber-html-reporter
 Let's get you started:
 
 1. Install the package through npm or yarn
-2. Create a reporter.js and specify the options. Example of `bootstrap` theme:
+2. Create a reporter.js and specify the options. Example of `mosaic` theme:
 
 ```js
 
 const { generate } = await import('klassijs-cucumber-html-reporter');
 
 const reportOptions = {
-        theme: 'bootstrap',
+        theme: 'mosaic',
         jsonFile: 'reports/klassijs-cucumber_report.json',
         output: 'reports/klassijs-cucumber_report.html',
         reportSuiteAsScenarios: true,
@@ -109,7 +103,7 @@ $ cucumberjs test/features/ -f summary -f json:test/report/cucumber_report.json
 ## Options
 
 #### `theme`
-Available: `['bootstrap', 'hierarchy', 'foundation', 'simple', 'modern', 'mosaic']`
+Available: `['modern', 'mosaic', 'bootstrap', 'hierarchy', 'foundation', 'simple']`
 Type: `String`
 
 Select the Theme for your HTML report.

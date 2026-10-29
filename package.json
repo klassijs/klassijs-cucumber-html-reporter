@@ -1,13 +1,14 @@
 {
   "name": "klassijs-cucumber-html-reporter",
-  "version": "6.1.0",
+  "version": "6.2.0",
   "description": "Generates Cucumber HTML reports in six different themes",
   "type": "module",
   "main": "index.js",
   "typings": "./index.d.ts",
   "exports": {
     ".": "./index.js"
-  },
+  }
+,
   "author": {
     "name": "Kushang Gajjar",
     "email": "g.kushang@gmail.com"
