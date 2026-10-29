@@ -9,6 +9,8 @@ let theme = {
   bootstrap: 'bootstrap',
   foundation: 'foundation',
   simple: 'simple',
+  modern: 'modern',
+  mosaic: 'mosaic',
 };
 
 let outputDirectory = 'test/report';
@@ -59,6 +61,8 @@ function assertJsonFile() {
   reporter.generate(getJsonFileOptions(theme.bootstrap));
   reporter.generate(getJsonFileOptions(theme.foundation));
   reporter.generate(getJsonFileOptions(theme.simple));
+  reporter.generate(getJsonFileOptions(theme.modern));
+  reporter.generate(getJsonFileOptions(theme.mosaic));
   assertHtmlReports(outputDirectory);
 }
 
@@ -67,6 +71,8 @@ function assertJsonDir() {
   reporter.generate(getJsonDirOptions(theme.bootstrap));
   reporter.generate(getJsonDirOptions(theme.foundation));
   reporter.generate(getJsonDirOptions(theme.simple));
+  reporter.generate(getJsonDirOptions(theme.modern));
+  reporter.generate(getJsonDirOptions(theme.mosaic));
   assertHtmlReports(outputDirectory);
 }
 
